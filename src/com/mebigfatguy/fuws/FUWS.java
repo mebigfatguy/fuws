@@ -68,6 +68,8 @@ public class FUWS {
             });
             t.start();
         }
+        
+        ss.close();
     }
     
     private static void process(Socket s) {
