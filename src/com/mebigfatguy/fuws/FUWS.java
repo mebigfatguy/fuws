@@ -21,6 +21,7 @@ package com.mebigfatguy.fuws;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -118,25 +119,35 @@ public class FUWS {
     }
     
     private static void sendGeneratedIndexHtmlResponse(OutputStream os, File directory, Map<String, String> headers) throws IOException {
+        
         sendLine(os, "HTTP/1.1 200 OK");
+        
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 sendLine(os, entry.getKey() + ": " + entry.getValue());
             }
         }
-        sendLine(os, "");
         
-        sendLine(os, "<body>");
-        sendLine(os, "<ul>");
-        File[] files = directory.listFiles();        
-        for (File f : files) {
-            String link = f.getPath().substring(DIRECTORY.getPath().length());
-            if (link.startsWith("/"))
-                link = link.substring(1);
-            sendLine(os, "<li><a href='" + link + "'>" + link + "</a></li>");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        {
+            sendLine(baos, "<html>");
+            sendLine(baos, "<body>");
+            sendLine(baos, "<ul>");
+            File[] files = directory.listFiles();        
+            for (File f : files) {
+                String link = f.getPath().substring(DIRECTORY.getPath().length());
+                if (link.startsWith("/"))
+                    link = link.substring(1);
+                sendLine(baos, "<li><a href='" + link + "'>" + link + "</a></li>");
+            }
+            sendLine(baos, "</ul>");
+            sendLine(baos, "</body>");
+            sendLine(baos, "</html>");
         }
-        sendLine(os, "</ul>");
-        sendLine(os, "</body>");
+        
+        sendLine(os, "Content-Length: " + baos.size());
+        sendLine(os, "");
+        os.write(baos.toByteArray());
         os.flush();
     }
     
