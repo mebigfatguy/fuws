@@ -73,12 +73,9 @@ public class FUWS {
     }
     
     private static void process(Socket s) {
-        BufferedReader br = null;
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8"));
-            bos = new BufferedOutputStream(s.getOutputStream());
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8"));
+             BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream())) {
             
             String line = br.readLine();
             if (line != null) {
@@ -98,14 +95,14 @@ public class FUWS {
                         return;
                     }
                     
-                    bis = new BufferedInputStream(new FileInputStream(f));
-                    
-                    sendLine(bos, "HTTP/1.1 200 OK");
-                    sendLine(bos, "Content-Length: " + f.length());
-                    sendLine(bos, "");
-                    copy(bis, bos);
-    
-                    bos.flush();
+                    try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
+                        sendLine(bos, "HTTP/1.1 200 OK");
+                        sendLine(bos, "Content-Length: " + f.length());
+                        sendLine(bos, "");
+                        copy(bis, bos);
+        
+                        bos.flush();
+                    }
                 } else {
                     sendErrorResponse(bos, 405, "Method not allowed: " + method, HEADERS_405);
                 }
@@ -113,9 +110,6 @@ public class FUWS {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            close(bis);
-            close(bos);
-            close(br);
             close(s);
         }
     }
