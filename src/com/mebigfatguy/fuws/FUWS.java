@@ -63,7 +63,11 @@ public class FUWS {
             final Socket s = ss.accept();
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    process(s);
+                    try {
+                        process(s);
+                    } finally {
+                        close(s);
+                    }
                 }
             });
             t.start();
@@ -109,8 +113,6 @@ public class FUWS {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            close(s);
         }
     }
     
