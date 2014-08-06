@@ -101,16 +101,16 @@ public class FUWS {
                         return;
                     }
                     
-                    try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
-                        sendLine(bos, "HTTP/1.1 200 OK");
-                        sendLine(bos, String.format("Content-Length: %d", f.length()));
-                        sendLine(bos, "");
-                        if ("GET".equalsIgnoreCase(method)) {
+                    sendResponseHeader(bos, f.length());
+                    if ("GET".equalsIgnoreCase(method)) {
+                    	try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
                         	copy(bis, bos);
                         }
-        
-                        bos.flush();
+                    } else {
+                    	sendResponseHeader(bos, f.length());
                     }
+                    
+                    bos.flush();
                 } else {
                     sendErrorResponse(bos, 405, String.format("Method not allowed: %s",  method), HEADERS_405);
                 }
@@ -118,6 +118,12 @@ public class FUWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private static void sendResponseHeader(OutputStream os, long length) throws IOException {
+    	sendLine(os, "HTTP/1.1 200 OK");
+        sendLine(os, String.format("Content-Length: %d", length));
+        sendLine(os, "");
     }
     
     private static void sendGeneratedIndexHtmlResponse(OutputStream os, File directory, Map<String, String> headers) throws IOException {
