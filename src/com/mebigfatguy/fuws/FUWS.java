@@ -62,6 +62,7 @@ public class FUWS {
             
             final Socket s = ss.accept();
             Thread t = new Thread(new Runnable() {
+            	@Override
                 public void run() {
                     try {
                         process(s);
