@@ -103,7 +103,7 @@ public class FUWS {
                     
                     try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
                         sendLine(bos, "HTTP/1.1 200 OK");
-                        sendLine(bos, "Content-Length: " + f.length());
+                        sendLine(bos, String.format("Content-Length: %d", f.length()));
                         sendLine(bos, "");
                         if ("GET".equalsIgnoreCase(method)) {
                         	copy(bis, bos);
@@ -112,7 +112,7 @@ public class FUWS {
                         bos.flush();
                     }
                 } else {
-                    sendErrorResponse(bos, 405, "Method not allowed: " + method, HEADERS_405);
+                    sendErrorResponse(bos, 405, String.format("Method not allowed: %s",  method), HEADERS_405);
                 }
             }
         } catch (Exception e) {
@@ -126,7 +126,7 @@ public class FUWS {
         
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
-                sendLine(os, entry.getKey() + ": " + entry.getValue());
+                sendLine(os, String.format("%s: %s", entry.getKey(), entry.getValue()));
             }
         }
         
@@ -140,24 +140,24 @@ public class FUWS {
                 String link = f.getPath().substring(DIRECTORY.getPath().length());
                 if (link.startsWith("/"))
                     link = link.substring(1);
-                sendLine(baos, "<li><a href='" + link + "'>" + link + "</a></li>");
+                sendLine(baos, String.format("<li><a href='%s'>%s</a></li>", link, link));
             }
             sendLine(baos, "</ul>");
             sendLine(baos, "</body>");
             sendLine(baos, "</html>");
         }
         
-        sendLine(os, "Content-Length: " + baos.size());
+        sendLine(os, String.format("Content-Length: %s", baos.size()));
         sendLine(os, "");
         os.write(baos.toByteArray());
         os.flush();
     }
     
     private static void sendErrorResponse(OutputStream os, int errorCode, String reason, Map<String, String> headers) throws IOException {
-        sendLine(os, "HTTP/1.1 " + errorCode + " " + reason);
+        sendLine(os, String.format("HTTP/1.1 %d %s", errorCode, reason));
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
-                sendLine(os, entry.getKey() + ": " + entry.getValue());
+                sendLine(os, String.format("%s: %s", entry.getKey(), entry.getValue()));
             }
         }
         sendLine(os, "");
