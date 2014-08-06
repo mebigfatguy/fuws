@@ -86,7 +86,7 @@ public class FUWS {
             if (line != null) {
                 String[] parts = line.split("\\s+");
                 String method = parts[0];
-                if ("GET".equalsIgnoreCase(method)) {
+                if ("HEAD".equalsIgnoreCase(method) || "GET".equalsIgnoreCase(method)) {
                     String path = parts[1];
                     if (path.startsWith("/")) {
                         path = path.substring(1);
@@ -104,7 +104,9 @@ public class FUWS {
                         sendLine(bos, "HTTP/1.1 200 OK");
                         sendLine(bos, "Content-Length: " + f.length());
                         sendLine(bos, "");
-                        copy(bis, bos);
+                        if ("GET".equalsIgnoreCase(method)) {
+                        	copy(bis, bos);
+                        }
         
                         bos.flush();
                     }
