@@ -1,7 +1,7 @@
 fuws
 ====
 
-A very simple, lightweight server.
+A very simple, lightweight static readonly webserver.
 
 
 Start like
