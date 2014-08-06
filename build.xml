@@ -41,7 +41,7 @@
             </fileset>
             <manifest>
                 <attribute name="fuws-version" value="${fuws.version}" />
-                <attribute name="Main-Class" value="com.mebigfatguy.fuws.FUWSTask" />
+                <attribute name="Main-Class" value="com.mebigfatguy.fuws.FUWS" />
                 <attribute name="Application-Name" value="FUWS" />
                 <attribute name="Permissions" value="all-permissions" />
                 <attribute name="Codebase" value="*" />
