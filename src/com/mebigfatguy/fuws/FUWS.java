@@ -144,8 +144,6 @@ public class FUWS {
             File[] files = directory.listFiles();        
             for (File f : files) {
                 String link = f.getPath().substring(DIRECTORY.getPath().length());
-                if (link.startsWith("/"))
-                    link = link.substring(1);
                 sendLine(baos, String.format("<li><a href='%s'>%s</a></li>", link, link));
             }
             sendLine(baos, "</ul>");
