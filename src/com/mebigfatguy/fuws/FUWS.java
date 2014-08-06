@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class FUWS {
     
     private static void process(Socket s) {
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8"));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
              BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream())) {
             
             String line = br.readLine();
@@ -164,7 +165,7 @@ public class FUWS {
     }
     
     private static void sendLine(OutputStream os, String line) throws IOException {
-        os.write((line + "\n").getBytes("UTF-8"));
+        os.write((line + "\n").getBytes(StandardCharsets.UTF_8));
     }
     
     private static void copy(InputStream is, OutputStream os) throws IOException {
