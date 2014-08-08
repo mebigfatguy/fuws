@@ -87,6 +87,7 @@ public class FUWS {
             if (line != null) {
                 String[] parts = line.split("\\s+");
                 String method = parts[0];
+                Map<String, String> headers = readHeaders(br);
                 if ("HEAD".equalsIgnoreCase(method) || "GET".equalsIgnoreCase(method)) {
                     String path = parts[1];
                     if (path.startsWith("/")) {
@@ -118,6 +119,17 @@ public class FUWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private static Map<String, String> readHeaders(BufferedReader br) throws IOException {
+    	Map<String, String> headers = new HashMap<String, String>();
+    	String line = br.readLine();
+    	while (!line.isEmpty()) {
+    		int colonPos = line.indexOf(':');
+    		headers.put(line.substring(0, colonPos).trim(), line.substring(colonPos+1).trim());
+    		line = br.readLine();
+    	}
+    	return headers;
     }
     
     private static void sendResponseHeader(OutputStream os, long length) throws IOException {
