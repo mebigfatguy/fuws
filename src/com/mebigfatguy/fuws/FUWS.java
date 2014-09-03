@@ -34,6 +34,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 
 public class FUWS {
@@ -81,7 +82,7 @@ public class FUWS {
     private static void process(Socket s) {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
-             BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream())) {
+             OutputStream bos = new BufferedOutputStream(s.getOutputStream())) {
             
             String line = br.readLine();
             if (line != null) {
@@ -102,16 +103,23 @@ public class FUWS {
                         return;
                     }
                     
-                    sendResponseHeader(bos, f.length());
+                    boolean gzip = accceptsGZIP(headers);
+                    sendResponseHeader(bos, f.length(), gzip);
                     if ("GET".equalsIgnoreCase(method)) {
-                    	try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
-                        	copy(bis, bos);
-                        }
+                    	OutputStream os = gzip ? new GZIPOutputStream(bos) : bos;	
+
+	                	try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {     
+	                    	copy(bis, os);
+	                    	if (gzip) {
+	                    		((GZIPOutputStream) os).finish();
+	                    	}
+	                    	os.flush();
+	                    }
                     } else {
-                    	sendResponseHeader(bos, f.length());
+                    	sendResponseHeader(bos, f.length(), gzip);
+                        bos.flush();
                     }
-                    
-                    bos.flush();
+
                 } else {
                     sendErrorResponse(bos, 405, String.format("Method not allowed: %s",  method), HEADERS_405);
                 }
@@ -132,9 +140,12 @@ public class FUWS {
     	return headers;
     }
     
-    private static void sendResponseHeader(OutputStream os, long length) throws IOException {
+    private static void sendResponseHeader(OutputStream os, long length, boolean useGZip) throws IOException {
     	sendLine(os, "HTTP/1.1 200 OK");
         sendLine(os, String.format("Content-Length: %d", length));
+        if (useGZip) {
+        	sendLine(os, "Content-Encoding: gzip");
+        }
         sendLine(os, "");
     }
     
@@ -192,6 +203,21 @@ public class FUWS {
             os.write(buffer, 0, len);
             len = is.read(buffer);
         }
+    }
+    
+    private static boolean accceptsGZIP(Map<String, String> headers) {
+    	String acEnc = headers.get("Accept-Encoding");
+    	if (acEnc == null)
+    		return false;
+    	
+    	String[] encodings = acEnc.split("\\s*,\\s*");
+    	for (String enc : encodings) {
+    		String[] parts = enc.split("\\s*;\\s*");
+    		if ("gzip".equals(parts[0])) {
+    			return (parts.length == 1) || (!"q=0".equals(parts[1]));
+    		}
+    	}
+    	return false;
     }
     
     private static void close(Closeable c) {
