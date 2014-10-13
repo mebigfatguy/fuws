@@ -7,6 +7,6 @@ A very simple, lightweight static readonly webserver.
 Start like
 
 
-java -cp FUWS {directory} {port}
+java FUWS {directory} {port}
 
 and it will server up files from the directory (recursively).
