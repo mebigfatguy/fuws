@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,6 +95,7 @@ public class FUWS {
                     if (path.startsWith("/")) {
                         path = path.substring(1);
                     }
+                    path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
                     File f = new File(DIRECTORY, path);
                     if (f.isDirectory() && f.exists()) {
                         sendGeneratedIndexHtmlResponse(bos, f, HEADERS_INDEX);
