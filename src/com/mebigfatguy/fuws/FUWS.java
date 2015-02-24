@@ -144,9 +144,10 @@ public class FUWS {
     
     private static void sendResponseHeader(OutputStream os, long length, boolean useGZip) throws IOException {
     	sendLine(os, "HTTP/1.1 200 OK");
-        sendLine(os, String.format("Content-Length: %d", length));
         if (useGZip) {
         	sendLine(os, "Content-Encoding: gzip");
+        } else {
+            sendLine(os, String.format("Content-Length: %d", length));
         }
         sendLine(os, "");
     }
