@@ -169,7 +169,8 @@ public class FUWS {
             File[] files = directory.listFiles();        
             for (File f : files) {
                 String link = f.getPath().substring(DIRECTORY.getPath().length());
-                sendLine(baos, String.format("<li><a href='%s'>%s</a></li>", link, link));
+                String name = f.getName();
+                sendLine(baos, String.format("<li><a href='%s'>%s</a></li>", link, name));
             }
             sendLine(baos, "</ul>");
             sendLine(baos, "</body>");
