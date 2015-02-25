@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class FUWS {
             sendLine(baos, "<ul>");
             File[] files = directory.listFiles();        
             for (File f : files) {
-                String link = f.getPath().substring(DIRECTORY.getPath().length());
+                String link = URLEncoder.encode(f.getPath().substring(DIRECTORY.getPath().length()), StandardCharsets.UTF_8.name());
                 String name = f.getName();
                 sendLine(baos, String.format("<li><a href='%s'>%s</a></li>", link, name));
             }
