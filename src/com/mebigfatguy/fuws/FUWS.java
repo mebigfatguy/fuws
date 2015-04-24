@@ -60,25 +60,23 @@ public class FUWS {
         DIRECTORY = new File(args[0]);
         int port = Integer.parseInt(args[1]);
         
-        ServerSocket ss = new ServerSocket(port);
-        
-        while (!Thread.interrupted()) {
-            
-            final Socket s = ss.accept();
-            Thread t = new Thread(new Runnable() {
-            	@Override
-                public void run() {
-                    try {
-                        process(s);
-                    } finally {
-                        close(s);
-                    }
-                }
-            });
-            t.start();
+        try (ServerSocket ss = new ServerSocket(port)) {        
+	        while (!Thread.interrupted()) {
+	            
+	            final Socket s = ss.accept();
+	            Thread t = new Thread(new Runnable() {
+	            	@Override
+	                public void run() {
+	                    try {
+	                        process(s);
+	                    } finally {
+	                        close(s);
+	                    }
+	                }
+	            });
+	            t.start();
+	        }
         }
-        
-        ss.close();
     }
     
     private static void process(Socket s) {
