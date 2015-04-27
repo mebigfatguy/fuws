@@ -46,7 +46,7 @@ public class FUWS {
     private static Map<String, String> HEADERS_405 = new HashMap<String, String>();
     private static Map<String, String> HEADERS_INDEX = new HashMap<String, String>();
     static {
-        HEADERS_405.put("Accept", "GET");
+        HEADERS_405.put("Allow", "HEAD, GET");
         HEADERS_INDEX.put("MimeType", "text/html");
     }
     
