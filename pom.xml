@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mebigfatguy.fuws</groupId>
     <artifactId>fuws</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     
     <parent>
         <groupId>org.sonatype.oss</groupId>
