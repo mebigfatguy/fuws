@@ -7,8 +7,8 @@
     <property name="src.dir" value="${basedir}/src" />
     <property name="classes.dir" value="${basedir}/classes" />
     <property name="javadoc.dir" value="${basedir}/javadoc" />
-    <property name="javac.source" value="1.7" />
-    <property name="javac.target" value="1.7" />
+    <property name="javac.source" value="1.8" />
+    <property name="javac.target" value="1.8" />
     <property name="javac.deprecation" value="on" />
     <property name="javac.debug" value="on" />
     <property name="fuws.version" value="0.1.0" />
@@ -82,7 +82,7 @@
                  destdir="${javadoc.dir}"
                  windowtitle="fuws api">
             <doctitle><![CDATA[<h1>fuws javadoc</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2013-2016 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+            <bottom><![CDATA[<i>Copyright &#169; 2013-2018 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
         </javadoc>
     </target>
     
