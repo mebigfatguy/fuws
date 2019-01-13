@@ -4,14 +4,15 @@
     <property file="build.properties" />
     <property file="version.properties" />
     
-    <property name="src.dir" value="${basedir}/src" />
-    <property name="classes.dir" value="${basedir}/classes" />
-    <property name="javadoc.dir" value="${basedir}/javadoc" />
+    <property name="src.dir" value="${basedir}/src/main/java" />
+    <property name="target.dir" value="${basedir}/target" />
+    <property name="classes.dir" value="${target.dir}/classes" />
+    <property name="javadoc.dir" value="${target.dir}/javadoc" />
     <property name="javac.source" value="1.8" />
     <property name="javac.target" value="1.8" />
     <property name="javac.deprecation" value="on" />
     <property name="javac.debug" value="on" />
-    <property name="fuws.version" value="0.1.0" />
+    <property name="fuws.version" value="0.1.1" />
     <property name="sonatype.dir" value="${user.home}/.fuws-${fuws.version}-sonatype" />
 
     <path id="fuws.classpath">
@@ -19,13 +20,12 @@
     </path>
         
     <target name="init">
+        <mkdir dir="${target.dir}"/>
         <mkdir dir="${classes.dir}"/>
     </target>
         
     <target name="clean">
-        <delete dir="${classes.dir}"/>
-        <delete file="${basedir}/fuws-${fuws.version}.jar" />
-        <delete file="${basedir}/fuws-${fuws.version}-sources.jar" />
+        <delete dir="${target.dir}"/>
     </target>
         
     <target name="compile" depends="init">
@@ -35,7 +35,7 @@
     </target>
     
     <target name="jar" depends="init,compile">
-        <jar destfile="${basedir}/fuws-${fuws.version}.jar">
+        <jar destfile="${target.dir}/fuws-${fuws.version}.jar">
             <fileset dir="${classes.dir}">
                 <include name="**/*.class" />
             </fileset>
@@ -59,13 +59,13 @@
     
     <target name="run" depends="jar">
         <java classname="com.mebigfatguy.fuws.FUWS" fork="true" classpathref="fuws.classpath">
-            <arg value="${basedir}"/>
+            <arg value="${target.dir}"/>
             <arg value="9999"/>
         </java>
     </target>
     
     <target name="srczip" description="builds the source distribution zip file">
-        <zip destfile="${basedir}/fuws-${fuws.version}-sources.jar">
+        <zip destfile="${target.dir}/fuws-${fuws.version}-sources.jar">
             <fileset dir="${basedir}">
                 <include name="**/*.java"/>
                 <include name="**/*.pom"/>

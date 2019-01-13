@@ -91,7 +91,7 @@ public class FUWS {
                 Map<String, String> headers = readHeaders(br);
                 if ("HEAD".equalsIgnoreCase(method) || "GET".equalsIgnoreCase(method)) {
                     String path = parts[1];
-                    if (path.startsWith("/")) {
+                    while (path.startsWith("/")) {
                         path = path.substring(1);
                     }
                     path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());

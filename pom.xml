@@ -4,10 +4,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <properties>
+        <build.version>0.1.1</build.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mebigfatguy.fuws</groupId>
     <artifactId>fuws</artifactId>
-    <version>0.1.0</version>
+    <version>${build.version}</version>
     
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -18,7 +24,7 @@
     <name>fuws</name>
     <description>An very simple lightweight webserver</description>
     <url>http://fuws.mebigfatguy.com</url>
-    <inceptionYear>2013-2016</inceptionYear>
+    <inceptionYear>2013-2018</inceptionYear>
     
     <developers>
         <developer>
@@ -40,14 +46,8 @@
         <developerConnection>scm:git://github.com/mebigfatguy/fuws.git</developerConnection>
         <url>https://github.com/mebigfatguy/fuws</url>    
     </scm>
-    
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
 
     <build>
-        <sourceDirectory>${basedir}/src</sourceDirectory>
         <resources>
             <resource>
                 <directory>${basedir}</directory>
@@ -62,61 +62,82 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>3.1.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>3.8.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.5</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>3.1.0</version>
+                    <configuration>
+					    <archive>
+						    <manifest>
+							    <mainClass>com.mebigfatguy.fuws.FUWS</mainClass>
+						    </manifest>
+                            <manifestEntries>
+                                <fuws-version>${build.version}</fuws-version>
+                                <Application-Name>FUWS</Application-Name>
+                                <Permissions>all-permissions</Permissions>
+                                <Codebase>*</Codebase>
+                                <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                                <Bundle-Name>fuws</Bundle-Name>
+                                <Bundle-SymbolicName>fuws; singleton:=true</Bundle-SymbolicName>
+                                <Bundle-Version>${build.version}</Bundle-Version>
+                                <Bundle-ClassPath>.</Bundle-ClassPath>
+                                <Bundle-Vendor>FUWS Project</Bundle-Vendor>
+                                <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+                                <Export-Package>com.mebigfatguy.fuws</Export-Package>
+                            </manifestEntries>
+					    </archive>
+				    </configuration>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>2.1.2</version>
+                    <version>3.0.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.4.1</version>
+                    <version>3.1.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>2.0.1</version>
+                    <version>3.7.1</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.1</version>
+                    <version>3.0.1</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.4.3</version>
+                    <version>2.22.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -126,8 +147,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
