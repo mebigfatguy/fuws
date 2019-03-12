@@ -3,17 +3,11 @@
     xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <properties>
-        <build.version>0.1.1</build.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
     
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mebigfatguy.fuws</groupId>
     <artifactId>fuws</artifactId>
-    <version>${build.version}</version>
+    <version>0.1.2</version>
     
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -25,7 +19,12 @@
     <description>An very simple lightweight webserver</description>
     <url>http://fuws.mebigfatguy.com</url>
     <inceptionYear>2013-2018</inceptionYear>
-    
+ 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+   
     <developers>
         <developer>
             <id>dbrosius</id>
@@ -86,21 +85,21 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.1</version>
                     <configuration>
 					    <archive>
 						    <manifest>
 							    <mainClass>com.mebigfatguy.fuws.FUWS</mainClass>
 						    </manifest>
                             <manifestEntries>
-                                <fuws-version>${build.version}</fuws-version>
+                                <fuws-version>${project.version}</fuws-version>
                                 <Application-Name>FUWS</Application-Name>
                                 <Permissions>all-permissions</Permissions>
                                 <Codebase>*</Codebase>
                                 <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
                                 <Bundle-Name>fuws</Bundle-Name>
                                 <Bundle-SymbolicName>fuws; singleton:=true</Bundle-SymbolicName>
-                                <Bundle-Version>${build.version}</Bundle-Version>
+                                <Bundle-Version>${project.version}</Bundle-Version>
                                 <Bundle-ClassPath>.</Bundle-ClassPath>
                                 <Bundle-Vendor>FUWS Project</Bundle-Vendor>
                                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
